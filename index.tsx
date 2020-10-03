@@ -26,6 +26,36 @@ function addItem() {
   });
 
   localStorage.setItem("grocery", JSON.stringify(groceryList));
+
+  updateTable();
+}
+
+function updateTable() {
+  const tblBody = document.getElementsByTagName("tbody")[0];
+
+  while (tblBody.firstChild) {
+    tblBody.removeChild(tblBody.firstChild);
+  }
+
+  const headerArr = Object.keys(groceryList[0]);
+  const headerRow = document.createElement("tr");
+  for (const h of headerArr) {
+    const headerCell = document.createElement("th");
+    const headerCellText = document.createTextNode(h);
+    headerCell.appendChild(headerCellText);
+    headerRow.appendChild(headerCell);
+  }
+  tblBody.appendChild(headerRow);
+  for (const item of groceryList) {
+    const row = document.createElement("tr");
+    for (const [key, value] of Object.entries(item)) {
+      const cell = document.createElement("td");
+      const cellText = document.createTextNode(value);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+    }
+    tblBody.appendChild(row);
+  }
 }
 
 dateInput();
