@@ -17,7 +17,11 @@ function addItem() {
         date: expireDate,
     });
     localStorage.setItem("grocery", JSON.stringify(groceryList));
+    sortByDate();
     updateTable();
+}
+function sortByDate() {
+    groceryList.sort(function (a, b) { return Number(new Date(a.date)) - Number(new Date(b.date)); });
 }
 function updateTable() {
     var tblBody = document.getElementsByTagName("tbody")[0];

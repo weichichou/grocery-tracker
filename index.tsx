@@ -27,7 +27,14 @@ function addItem() {
 
   localStorage.setItem("grocery", JSON.stringify(groceryList));
 
+  sortByDate();
   updateTable();
+}
+
+function sortByDate() {
+  groceryList.sort(
+    (a, b) => Number(new Date(a.date)) - Number(new Date(b.date))
+  );
 }
 
 function updateTable() {
