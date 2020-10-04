@@ -120,7 +120,6 @@ function updateTable() {
 }
 
 function deleteItem(id: string) {
-  console.log("id", id);
   const newList = groceryList.filter(
     (i) => i.item !== id.split("_")[0] || i.date !== id.split("_")[1]
   );
