@@ -19,6 +19,10 @@ td {
   padding: 0.5rem;
 }
 
+tr:nth-child(even) {
+  background-color: oldlace;
+}
+
 #add-btn {
   width: 80vw;
   margin: 1rem;
