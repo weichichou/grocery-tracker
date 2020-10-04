@@ -27,6 +27,14 @@ function enableBtn() {
   document.getElementById("add-btn").disabled =
     itemName.length === 0 || expireDate.length === 0;
 }
+var itemName;
+var expireDate;
+function enableBtn() {
+  itemName = document.getElementById("item-name").value;
+  expireDate = document.getElementById("expire-date").value;
+  document.getElementById("add-btn").disabled =
+    itemName.length === 0 || expireDate.length === 0;
+}
 var dd = String(new Date().getDate()).padStart(2, "0");
 var mm = String(new Date().getMonth() + 1).padStart(2, "0");
 var yyyy = new Date().getFullYear();
