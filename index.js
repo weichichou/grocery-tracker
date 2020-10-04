@@ -16,16 +16,16 @@ function addItem() {
         .value;
     var expireDate = document.getElementById("expire-date").value;
     var oneDay = 24 * 60 * 60 * 1000;
-    var remainingDays = Math.round((Number(new Date(expireDate)) - Date.now()) / oneDay);
+    var remainingDays = Math.ceil((Number(new Date(expireDate)) - Date.now()) / oneDay);
     groceryList.push({
         item: itemName,
         date: expireDate,
         remaining: remainingDays === 0
-            ? "Expire today"
+            ? "expire today"
             : remainingDays < 0
-                ? "Expired :("
+                ? "expired"
                 : remainingDays === 1
-                    ? "Expire tomorrow"
+                    ? "expire tmr"
                     : remainingDays.toString() + " days",
     });
     sortByDate();
@@ -54,16 +54,25 @@ function updateTable() {
         var row = document.createElement("tr");
         var uniqueId = item.item + "_" + item.date;
         row.setAttribute("id", uniqueId);
+        !item.remaining.includes("days") && row.setAttribute("class", "red-text");
         for (var _i = 0, _a = Object.entries(item); _i < _a.length; _i++) {
             var _b = _a[_i], key = _b[0], value = _b[1];
             var cell = document.createElement("td");
-            var cellText = document.createTextNode(value);
+            var cellText = void 0;
+            if (key === "date") {
+                var m = value.split("-")[1];
+                var d = value.split("-")[2];
+                cellText = document.createTextNode(m + "/" + d);
+            }
+            else {
+                cellText = document.createTextNode(value);
+            }
             cell.appendChild(cellText);
             row.appendChild(cell);
         }
         var deleteBtn = document.createElement("button");
         deleteBtn.addEventListener("click", function () { return deleteItem(uniqueId); });
-        var deleteBtnText = document.createTextNode("🗑️");
+        var deleteBtnText = document.createTextNode("X");
         deleteBtn.appendChild(deleteBtnText);
         row.appendChild(deleteBtn);
         tblBody.appendChild(row);
@@ -75,7 +84,7 @@ function updateTable() {
 }
 function deleteItem(id) {
     console.log("id", id);
-    var newList = groceryList.filter(function (i) { return i.item !== id.split("_")[0] && i.date !== id.split("_")[1]; });
+    var newList = groceryList.filter(function (i) { return i.item !== id.split("_")[0] || i.date !== id.split("_")[1]; });
     groceryList = newList;
     localStorage.setItem("grocery", JSON.stringify(groceryList));
     updateTable();
