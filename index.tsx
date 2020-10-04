@@ -23,7 +23,7 @@ function addItem() {
   ) as HTMLInputElement).value;
 
   const oneDay = 24 * 60 * 60 * 1000;
-  const remainingDays = Math.round(
+  const remainingDays = Math.ceil(
     (Number(new Date(expireDate)) - Date.now()) / oneDay
   );
 
@@ -32,11 +32,11 @@ function addItem() {
     date: expireDate,
     remaining:
       remainingDays === 0
-        ? "Expire today"
+        ? "expire today"
         : remainingDays < 0
-        ? "Expired :("
+        ? "expired"
         : remainingDays === 1
-        ? "Expire tomorrow"
+        ? "expire tmr"
         : remainingDays.toString() + " days",
   });
 
@@ -74,15 +74,26 @@ function updateTable() {
     const row = document.createElement("tr");
     const uniqueId = item.item + "_" + item.date;
     row.setAttribute("id", uniqueId);
+
+    !item.remaining.includes("days") && row.setAttribute("class", "red-text");
+
     for (const [key, value] of Object.entries(item)) {
       const cell = document.createElement("td");
-      const cellText = document.createTextNode(value);
+
+      let cellText;
+      if (key === "date") {
+        const m = value.split("-")[1];
+        const d = value.split("-")[2];
+        cellText = document.createTextNode(m + "/" + d);
+      } else {
+        cellText = document.createTextNode(value);
+      }
       cell.appendChild(cellText);
       row.appendChild(cell);
     }
     const deleteBtn = document.createElement("button");
     deleteBtn.addEventListener("click", () => deleteItem(uniqueId));
-    const deleteBtnText = document.createTextNode("🗑️");
+    const deleteBtnText = document.createTextNode("X");
     deleteBtn.appendChild(deleteBtnText);
     row.appendChild(deleteBtn);
     tblBody.appendChild(row);
@@ -92,7 +103,7 @@ function updateTable() {
 function deleteItem(id: string) {
   console.log("id", id);
   const newList = groceryList.filter(
-    (i) => i.item !== id.split("_")[0] && i.date !== id.split("_")[1]
+    (i) => i.item !== id.split("_")[0] || i.date !== id.split("_")[1]
   );
   groceryList = newList;
   localStorage.setItem("grocery", JSON.stringify(groceryList));

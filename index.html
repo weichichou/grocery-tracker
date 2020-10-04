@@ -4,14 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Grocery Tracker</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header>
-      <label for="item">Item:</label>
-      <input type="text" id="item-name" />
-      <label for="expire-date">Expire date:</label>
-      <input type="date" id="expire-date" />
-      <button onclick="addItem();">Add</button>
+      <div>
+        <label for="item">item:</label>
+        <input type="text" id="item-name" />
+      </div>
+      <div>
+        <label for="expire-date">expire date:</label>
+        <input type="date" id="expire-date" />
+      </div>
+
+      <button id="add-btn" onclick="addItem();">add</button>
     </header>
     <main>
       <table>

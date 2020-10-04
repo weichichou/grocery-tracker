@@ -1,0 +1,34 @@
+body,
+button,
+input,
+table {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+input {
+  width: 80vw;
+  margin-bottom: 0.5rem;
+}
+
+table {
+  margin-top: 1rem;
+}
+
+td {
+  padding: 0.5rem;
+}
+
+#add-btn {
+  width: 80vw;
+  margin: 1rem;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+.red-text {
+  color: red;
+}
