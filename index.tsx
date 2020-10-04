@@ -1,4 +1,6 @@
-let groceryList: { item: string; date: string }[] = [];
+//const getList = JSON.parse(localStorage.getItem("grocery"));
+//console.log(getList);
+let groceryList: { item: string; date: string; remaining: string }[] = [];
 
 let dd = String(new Date().getDate()).padStart(2, "0");
 let mm = String(new Date().getMonth() + 1).padStart(2, "0");
@@ -20,14 +22,26 @@ function addItem() {
     "expire-date"
   ) as HTMLInputElement).value;
 
+  const oneDay = 24 * 60 * 60 * 1000;
+  const remainingDays = Math.round(
+    (Number(new Date(expireDate)) - Date.now()) / oneDay
+  );
+
   groceryList.push({
     item: itemName,
     date: expireDate,
+    remaining:
+      remainingDays === 0
+        ? "Expire today"
+        : remainingDays < 0
+        ? "Expired :("
+        : remainingDays.toString() + " days",
   });
+
+  sortByDate();
 
   localStorage.setItem("grocery", JSON.stringify(groceryList));
 
-  sortByDate();
   updateTable();
 }
 

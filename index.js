@@ -1,4 +1,6 @@
 "use strict";
+//const getList = JSON.parse(localStorage.getItem("grocery"));
+//console.log(getList);
 var groceryList = [];
 var dd = String(new Date().getDate()).padStart(2, "0");
 var mm = String(new Date().getMonth() + 1).padStart(2, "0");
@@ -12,12 +14,19 @@ function addItem() {
     var itemName = document.getElementById("item-name")
         .value;
     var expireDate = document.getElementById("expire-date").value;
+    var oneDay = 24 * 60 * 60 * 1000;
+    var remainingDays = Math.round((Number(new Date(expireDate)) - Date.now()) / oneDay);
     groceryList.push({
         item: itemName,
         date: expireDate,
+        remaining: remainingDays === 0
+            ? "Expire today"
+            : remainingDays < 0
+                ? "Expired :("
+                : remainingDays.toString() + " days",
     });
-    localStorage.setItem("grocery", JSON.stringify(groceryList));
     sortByDate();
+    localStorage.setItem("grocery", JSON.stringify(groceryList));
     updateTable();
 }
 function sortByDate() {
