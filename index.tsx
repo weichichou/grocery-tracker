@@ -35,6 +35,8 @@ function addItem() {
         ? "Expire today"
         : remainingDays < 0
         ? "Expired :("
+        : remainingDays === 1
+        ? "Expire tomorrow"
         : remainingDays.toString() + " days",
   });
 
