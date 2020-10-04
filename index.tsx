@@ -16,9 +16,6 @@ function dateInput() {
 }
 
 function addItem() {
-  console.log(
-    (document.getElementById("expire-date") as HTMLInputElement).value
-  );
   const itemName = (document.getElementById("item-name") as HTMLInputElement)
     .value;
   const expireDate = (document.getElementById(
@@ -72,8 +69,11 @@ function updateTable() {
     headerRow.appendChild(headerCell);
   }
   tblBody.appendChild(headerRow);
+
   for (const item of groceryList) {
     const row = document.createElement("tr");
+    const uniqueId = item.item + "_" + item.date;
+    row.setAttribute("id", uniqueId);
     for (const [key, value] of Object.entries(item)) {
       const cell = document.createElement("td");
       const cellText = document.createTextNode(value);
@@ -81,11 +81,22 @@ function updateTable() {
       row.appendChild(cell);
     }
     const deleteBtn = document.createElement("button");
-    const deleteBtnText = document.createTextNode("Delete");
+    deleteBtn.addEventListener("click", () => deleteItem(uniqueId));
+    const deleteBtnText = document.createTextNode("🗑️");
     deleteBtn.appendChild(deleteBtnText);
     row.appendChild(deleteBtn);
     tblBody.appendChild(row);
   }
+}
+
+function deleteItem(id: string) {
+  console.log("id", id);
+  const newList = groceryList.filter(
+    (i) => i.item !== id.split("_")[0] && i.date !== id.split("_")[1]
+  );
+  groceryList = newList;
+  localStorage.setItem("grocery", JSON.stringify(groceryList));
+  updateTable();
 }
 
 getListFromLocalStorage();
