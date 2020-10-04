@@ -80,6 +80,10 @@ function updateTable() {
       cell.appendChild(cellText);
       row.appendChild(cell);
     }
+    const deleteBtn = document.createElement("button");
+    const deleteBtnText = document.createTextNode("Delete");
+    deleteBtn.appendChild(deleteBtnText);
+    row.appendChild(deleteBtn);
     tblBody.appendChild(row);
   }
 }
