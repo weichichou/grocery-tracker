@@ -45,6 +45,9 @@ function addItem() {
   localStorage.setItem("grocery", JSON.stringify(groceryList));
 
   updateTable();
+
+  const textbox = document.getElementById("item-name") as HTMLInputElement;
+  textbox.value = textbox.defaultValue;
 }
 
 function sortByDate() {
