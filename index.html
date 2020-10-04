@@ -10,14 +10,14 @@
     <header>
       <div>
         <label for="item">item:</label>
-        <input type="text" id="item-name" />
+        <input type="text" id="item-name" onchange="enableBtn()" />
       </div>
       <div>
         <label for="expire-date">expire date:</label>
-        <input type="date" id="expire-date" />
+        <input type="date" id="expire-date" onchange="enableBtn()" />
       </div>
 
-      <button id="add-btn" onclick="addItem();">add</button>
+      <button id="add-btn" onclick="addItem()">add</button>
     </header>
     <main>
       <table>

@@ -5,6 +5,18 @@ function getListFromLocalStorage() {
   groceryList = list === null ? [] : JSON.parse(list);
 }
 
+let itemName;
+let expireDate;
+
+function enableBtn() {
+  itemName = (document.getElementById("item-name") as HTMLInputElement).value;
+  expireDate = (document.getElementById("expire-date") as HTMLInputElement)
+    .value;
+
+  (document.getElementById("add-btn") as HTMLButtonElement).disabled =
+    itemName.length === 0 || expireDate.length === 0;
+}
+
 let dd = String(new Date().getDate()).padStart(2, "0");
 let mm = String(new Date().getMonth() + 1).padStart(2, "0");
 let yyyy = new Date().getFullYear();
@@ -16,11 +28,9 @@ function dateInput() {
 }
 
 function addItem() {
-  const itemName = (document.getElementById("item-name") as HTMLInputElement)
+  itemName = (document.getElementById("item-name") as HTMLInputElement).value;
+  expireDate = (document.getElementById("expire-date") as HTMLInputElement)
     .value;
-  const expireDate = (document.getElementById(
-    "expire-date"
-  ) as HTMLInputElement).value;
 
   const oneDay = 24 * 60 * 60 * 1000;
   const remainingDays = Math.ceil(
@@ -48,6 +58,8 @@ function addItem() {
 
   const textbox = document.getElementById("item-name") as HTMLInputElement;
   textbox.value = textbox.defaultValue;
+
+  enableBtn();
 }
 
 function sortByDate() {
@@ -119,4 +131,5 @@ function deleteItem(id: string) {
 
 getListFromLocalStorage();
 dateInput();
+enableBtn();
 updateTable();
