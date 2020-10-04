@@ -1,6 +1,9 @@
-//const getList = JSON.parse(localStorage.getItem("grocery"));
-//console.log(getList);
-let groceryList: { item: string; date: string; remaining: string }[] = [];
+let groceryList: { item: string; date: string; remaining: string }[];
+
+function getListFromLocalStorage() {
+  const list = localStorage.getItem("grocery");
+  groceryList = list === null ? [] : JSON.parse(list);
+}
 
 let dd = String(new Date().getDate()).padStart(2, "0");
 let mm = String(new Date().getMonth() + 1).padStart(2, "0");
@@ -81,4 +84,6 @@ function updateTable() {
   }
 }
 
+getListFromLocalStorage();
 dateInput();
+updateTable();

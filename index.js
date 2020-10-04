@@ -1,7 +1,9 @@
 "use strict";
-//const getList = JSON.parse(localStorage.getItem("grocery"));
-//console.log(getList);
-var groceryList = [];
+var groceryList;
+function getListFromLocalStorage() {
+    var list = localStorage.getItem("grocery");
+    groceryList = list === null ? [] : JSON.parse(list);
+}
 var dd = String(new Date().getDate()).padStart(2, "0");
 var mm = String(new Date().getMonth() + 1).padStart(2, "0");
 var yyyy = new Date().getFullYear();
@@ -62,4 +64,6 @@ function updateTable() {
         tblBody.appendChild(row);
     }
 }
+getListFromLocalStorage();
 dateInput();
+updateTable();
