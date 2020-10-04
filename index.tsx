@@ -68,6 +68,7 @@ function updateTable() {
     headerCell.appendChild(headerCellText);
     headerRow.appendChild(headerCell);
   }
+  headerRow.appendChild(document.createElement("th"));
   tblBody.appendChild(headerRow);
 
   for (const item of groceryList) {
@@ -91,11 +92,14 @@ function updateTable() {
       cell.appendChild(cellText);
       row.appendChild(cell);
     }
+
+    const newTd = document.createElement("td");
     const deleteBtn = document.createElement("button");
     deleteBtn.addEventListener("click", () => deleteItem(uniqueId));
     const deleteBtnText = document.createTextNode("X");
     deleteBtn.appendChild(deleteBtnText);
-    row.appendChild(deleteBtn);
+    newTd.appendChild(deleteBtn);
+    row.appendChild(newTd);
     tblBody.appendChild(row);
   }
 }
