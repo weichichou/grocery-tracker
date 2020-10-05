@@ -1,4 +1,5 @@
-let groceryList: { item: string; date: string; remaining: string }[];
+let groceryList: { item: string; date: string }[];
+let fullList: { item: string; date: string; remaining: string }[];
 
 function getListFromLocalStorage() {
   const list = localStorage.getItem("grocery");
@@ -32,25 +33,14 @@ function addItem() {
   expireDate = (document.getElementById("expire-date") as HTMLInputElement)
     .value;
 
-  const oneDay = 24 * 60 * 60 * 1000;
-  const remainingDays = Math.ceil(
-    (Number(new Date(expireDate)) - Date.now()) / oneDay
-  );
-
   groceryList.push({
     item: itemName,
     date: expireDate,
-    remaining:
-      remainingDays === 0
-        ? "expire today"
-        : remainingDays < 0
-        ? "expired"
-        : remainingDays === 1
-        ? "expire tmr"
-        : remainingDays.toString() + " days",
   });
 
   sortByDate();
+
+  console.log("groceryList", groceryList);
 
   localStorage.setItem("grocery", JSON.stringify(groceryList));
 
@@ -68,14 +58,40 @@ function sortByDate() {
   );
 }
 
+function getFullList() {
+  const newList = [...groceryList];
+  fullList = newList.map((i) =>
+    Object.assign(i, { remaining: calculateRemainingDays(i.date) })
+  );
+}
+
+function calculateRemainingDays(date: string): string {
+  let msg;
+  const oneDay = 24 * 60 * 60 * 1000;
+  const remainingDays = Math.ceil(
+    (Number(new Date(date)) - Date.now()) / oneDay
+  );
+  msg =
+    remainingDays === 0
+      ? "expire today"
+      : remainingDays < 0
+      ? "expired"
+      : remainingDays === 1
+      ? "expire tmr"
+      : remainingDays.toString() + " days";
+  return msg;
+}
+
 function updateTable() {
+  getFullList();
+
   const tblBody = document.getElementsByTagName("tbody")[0];
 
   while (tblBody.firstChild) {
     tblBody.removeChild(tblBody.firstChild);
   }
 
-  const headerArr = Object.keys(groceryList[0]);
+  const headerArr = Object.keys(fullList[0]);
   const headerRow = document.createElement("tr");
   for (const h of headerArr) {
     const headerCell = document.createElement("th");
@@ -83,10 +99,11 @@ function updateTable() {
     headerCell.appendChild(headerCellText);
     headerRow.appendChild(headerCell);
   }
+
   headerRow.appendChild(document.createElement("th"));
   tblBody.appendChild(headerRow);
 
-  for (const item of groceryList) {
+  for (const item of fullList) {
     const row = document.createElement("tr");
     const uniqueId = item.item + "_" + item.date;
     row.setAttribute("id", uniqueId);
