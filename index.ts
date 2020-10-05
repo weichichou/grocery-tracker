@@ -1,5 +1,4 @@
 let groceryList: { item: string; date: string }[];
-let fullList: { item: string; date: string; remaining: string }[];
 
 function getListFromLocalStorage() {
   const list = localStorage.getItem("grocery");
@@ -58,11 +57,11 @@ function sortByDate() {
   );
 }
 
-function getFullList() {
-  const newList = [...groceryList];
-  fullList = newList.map((i) =>
-    Object.assign(i, { remaining: calculateRemainingDays(i.date) })
-  );
+function getFullList(): { item: string; date: string; remaining: string }[] {
+  return groceryList.map((i) => ({
+    ...i,
+    remaining: calculateRemainingDays(i.date),
+  }));
 }
 
 function calculateRemainingDays(date: string): string {
@@ -83,7 +82,7 @@ function calculateRemainingDays(date: string): string {
 }
 
 function updateTable() {
-  getFullList();
+  const fullList = getFullList();
 
   const tblBody = document.getElementsByTagName("tbody")[0];
 
