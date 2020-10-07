@@ -1,6 +1,9 @@
+import commonItemList from "../common-item-list";
+
 let groceryList: { item: string; date: string }[];
 
 function getListFromLocalStorage() {
+  console.log("commonItemList", commonItemList);
   const list = localStorage.getItem("grocery");
   groceryList = list === null ? [] : JSON.parse(list);
 }
