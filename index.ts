@@ -31,7 +31,7 @@ function addItem() {
   itemName = (document.getElementById("item-name") as HTMLInputElement).value;
   expireDate = (document.getElementById("expire-date") as HTMLInputElement)
     .value;
-
+  console.log("expire date", expireDate)
   groceryList.push({
     item: itemName,
     date: expireDate,
@@ -145,14 +145,8 @@ function deleteItem(id: string) {
 }
 
 // Web Speech API
-//var speechRecognition: SpeechRecognition = webkitSpeechRecognition
-
-var colors = [ 'aqua' , 'azure' , 'beige', 'bisque', 'black', 'blue', 'brown', 'chocolate', 'coral', 'crimson', 'cyan', 'fuchsia', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'green', 'indigo', 'ivory', 'khaki', 'lavender', 'lime', 'linen', 'magenta', 'maroon', 'moccasin', 'navy', 'olive', 'orange', 'orchid', 'peru', 'pink', 'plum', 'purple', 'red', 'salmon', 'sienna', 'silver', 'snow', 'tan', 'teal', 'thistle', 'tomato', 'turquoise', 'violet', 'white', 'yellow'];
-var grammar = '#JSGF V1.0; grammar colors; public <color> = ' + colors.join(' | ') + ' ;'
-
 var recognition = new (window as any)['webkitSpeechRecognition']();
 var speechRecognitionList = new (window as any)['webkitSpeechGrammarList']();
-speechRecognitionList.addFromString(grammar, 1);
 recognition.grammars = speechRecognitionList;
 recognition.continuous = false;
 recognition.lang = 'en-US';
@@ -163,17 +157,17 @@ recognition.maxAlternatives = 1;
 const micIcon = document.getElementById("microphone") as HTMLElement
 micIcon.onclick = function() {
   recognition.start();
-  console.log('Ready to receive a color command.');
+  console.log('Ready to receive a speech command.');
 }
 
 recognition.onresult = function(event: any) {
-  //var color = event.results[0][0].transcript;
-  //diagnostic.textContent = 'Result received: ' + color + '.';
-  //bg.style.backgroundColor = color;
   console.log(event.results);
-  let speechResultItem: string = event.results[0][0].transcript;
-  console.log("speechResultItem", speechResultItem);
-  (document.getElementById("item-name") as HTMLInputElement).value = speechResultItem
+  let speechResult: string[] = event.results[0][0].transcript.split("expires on");
+  console.log("speechResult", speechResult);
+  //let speechResultItem: string = event.results[0][0].transcript;
+  //console.log("speechResultItem", speechResultItem);
+  console.log("speechResult[0]", speechResult[0]);
+  (document.getElementById("item-name") as HTMLInputElement).value = speechResult[0]
 }
 
 recognition.onspeechend = function() {
