@@ -171,6 +171,9 @@ recognition.onresult = function(event: any) {
   //diagnostic.textContent = 'Result received: ' + color + '.';
   //bg.style.backgroundColor = color;
   console.log(event.results);
+  let speechResultItem: string = event.results[0][0].transcript;
+  console.log("speechResultItem", speechResultItem);
+  (document.getElementById("item-name") as HTMLInputElement).value = speechResultItem
 }
 
 recognition.onspeechend = function() {
