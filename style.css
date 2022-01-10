@@ -36,3 +36,7 @@ main {
 .red-text {
   color: red;
 }
+
+#microphone{
+  width: 40px;
+}

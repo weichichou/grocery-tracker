@@ -159,7 +159,9 @@ recognition.lang = 'en-US';
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
 
-document.body.onclick = function() {
+
+const micIcon = document.getElementById("microphone") as HTMLElement
+micIcon.onclick = function() {
   recognition.start();
   console.log('Ready to receive a color command.');
 }
