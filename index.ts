@@ -162,19 +162,47 @@ micIcon.onclick = function() {
 
 recognition.onresult = function(event: any) {
   console.log(event.results);
-  let speechResult: string[] = event.results[0][0].transcript.split("expires on");
+  let speechResult: string[] = event.results[0][0].transcript.split("expires on ");
   console.log("speechResult", speechResult);
   //let speechResultItem: string = event.results[0][0].transcript;
   //console.log("speechResultItem", speechResultItem);
   console.log("speechResult[0]", speechResult[0]);
   (document.getElementById("item-name") as HTMLInputElement).value = speechResult[0]
+  console.log("speech result [1] splited", speechResult[1].split(" "))
+  let dateArray = speechResult[1].split(" ")
+  //dateArray: ["March", "1st", "2022"]
+  parseDate(dateArray)
 }
 
 recognition.onspeechend = function() {
   recognition.stop();
 }
 
+function parseDate(speechDate: string[]){
+  let result;  
+  let year = "2022"
+  let month = monthToNumber(speechDate[0].toLowerCase())
+  let date;
+console.log("month", month)
+  //console.log(result)
+  result = year + "-" + month + "-" + date
+  console.log("date result", result)
+  //expected output: 2022-02-20
+}
+
+function monthToNumber(month: string){
+  // hashmap
+  const monthConverter: {[key: string ]: string} = {
+    "janurary": "01",
+    "feburary": "02",
+    "march": "03",
+    "april": "04"
+  }
+  return monthConverter[month]
+}
+
 getListFromLocalStorage();
 dateInput();
 enableBtn();
 updateTable();
+//parseDate("Janurary")
